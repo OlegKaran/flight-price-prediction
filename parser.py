@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 import time
 from itertools import permutations
-from api import API_TOKEN
+from api_aviasales import API_TOKEN
 
 url = 'http://api.travelpayouts.com/v2/prices/month-matrix'
 headers = {

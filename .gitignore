@@ -5,3 +5,7 @@ mlflow.db
 /data/aviasales_dataset_in_rubles_with_months(1).pkl
 .venv/
 /catboost_info
+.idea/
+__pycache__/
+*.pyc
+.DS_Store

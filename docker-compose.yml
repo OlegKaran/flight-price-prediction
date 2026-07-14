@@ -1,0 +1,22 @@
+services:
+  api:
+    build: .
+    image: flight-price-predictor
+    container_name: flight-api
+    ports:
+      - "8000:8000"
+    command: uvicorn apps.app_fastapi:app --host 0.0.0.0 --port 8000
+    restart: unless-stopped
+
+  ui:
+    build: .
+    image: flight-price-predictor
+    container_name: flight-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+    command: streamlit run apps/app_streamlit.py --server.address=0.0.0.0 --server.port=8501
+    depends_on:
+      - api
+    restart: unless-stopped

@@ -6,7 +6,7 @@ from schemas import FlightInfo, PriceResponse
 from ml_service import FlightPricePredictor
 from config import CITY_TO_IATA, FLIGHT_INFO
 
-flight_price_prediction = FlightPricePredictor("models_and_pipelines/flight_price_predictor.cbm",
+flight_price_prediction = FlightPricePredictor("models_and_pipelines/flight_price_predictor_xgboost.json",
                                                "models_and_pipelines/preprocessor.pkl",
                                                )
 
@@ -30,13 +30,13 @@ def predict_price(request: FlightInfo):
     actual_distance = route_data["distance"]
     actual_duration = route_data["duration"]
     input_data = pd.DataFrame({
-        "depart_date": request.depart_date,
-        "origin": iata_code_of_origin,
-        "destination": iata_code_of_destination,
-        "found_at": date.today(),
-        "number_of_changes": request.number_of_changes,
-        "duration": actual_duration,
-        "distance": actual_distance
+        "depart_date": [request.depart_date],
+        "origin": [iata_code_of_origin],
+        "destination": [iata_code_of_destination],
+        "found_at": [date.today()],
+        "number_of_changes": [request.number_of_changes],
+        "duration": [actual_duration],
+        "distance": [actual_distance]
     })
     processed_data = flight_price_prediction.prepare_data(input_data)
     start_time = time.perf_counter()

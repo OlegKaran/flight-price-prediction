@@ -4,11 +4,10 @@ from catboost import CatBoostRegressor
 
 
 class FlightPricePredictor:
-    def __init__(self, model_path, encoder_path, scaler_path):
+    def __init__(self, model_path, preprocessor_path):
         self.model = CatBoostRegressor()
         self.model.load_model(model_path)
-        self.encoder = joblib.load(encoder_path)
-        self.scaler = joblib.load(scaler_path)
+        self.preprocessor = joblib.load(preprocessor_path)
 
     def prepare_data(self, input_data: pd.DataFrame) -> pd.DataFrame:
         processed_df = input_data.copy()
@@ -32,17 +31,18 @@ class FlightPricePredictor:
             month_parts = ['start', 'middle', 'end']
             processed_df['month_part'] = pd.cut(processed_df['departure_day'], bins=bins, labels=month_parts)
             processed_df.drop(columns='departure_day', inplace=True)
-        cols_to_normalize = ['duration', 'distance', 'days_to_departure']
-        cols_to_one_hot_encode = ['month_part', 'departure_month', 'departure_day_of_week', 'origin', 'destination', 'season']
-        processed_df[cols_to_normalize] = processed_df[cols_to_normalize].astype(float)
-        processed_df.loc[:, cols_to_normalize] = self.scaler.transform(processed_df[cols_to_normalize])
-        encoded_columns = self.encoder.transform(processed_df[cols_to_one_hot_encode])
-        encoded_df = pd.DataFrame(
-            encoded_columns,
-            columns=self.encoder.get_feature_names_out(cols_to_one_hot_encode),
-            index=processed_df.index
-        )
-        final_data = processed_df.drop(columns=cols_to_one_hot_encode).join(encoded_df)
+        # cols_to_normalize = ['duration', 'distance', 'days_to_departure']
+        # cols_to_one_hot_encode = ['month_part', 'departure_month', 'departure_day_of_week', 'origin', 'destination', 'season']
+        # processed_df[cols_to_normalize] = processed_df[cols_to_normalize].astype(float)
+        # processed_df.loc[:, cols_to_normalize] = self.scaler.transform(processed_df[cols_to_normalize])
+        # encoded_columns = self.encoder.transform(processed_df[cols_to_one_hot_encode])
+        # encoded_df = pd.DataFrame(
+        #     encoded_columns,
+        #     columns=self.encoder.get_feature_names_out(cols_to_one_hot_encode),
+        #     index=processed_df.index
+        # )
+        # final_data = processed_df.drop(columns=cols_to_one_hot_encode).join(encoded_df)
+        final_data = self.preprocessor.transform(processed_df)
         return final_data
 
     def model_prediction(self, input_data: pd.DataFrame) -> int:

@@ -4,15 +4,14 @@ import datetime
 from ml_service import FlightPricePredictor
 from config import FLIGHT_INFO, CITY_MAPPING
 
-flight_price_predict = FlightPricePredictor("models/flight_price_predictor.cbm",
-                                               "models/one_hot_encoder.pkl",
-                                               "models/scaler.pkl"
+flight_price_predict = FlightPricePredictor("models_and_pipelines/flight_price_predictor.cbm",
+                                               "models_and_pipelines/preprocessor.pkl",
                                             )
 @st.cache_resource
 def load_model_and_artifacts():
-    return flight_price_predict.model, flight_price_predict.scaler, flight_price_predict.encoder
+    return flight_price_predict.model, flight_price_predict.preprocessor
 
-model, scaler, one_hot_encoder = load_model_and_artifacts()
+model, preprocessor = load_model_and_artifacts()
 st.title('️Предсказание цен на авиабилеты')
 st.write('Выберите параметры перелета, и CatBoost рассчитает примерную стоимость авиабилетов')
 today = datetime.date.today()

@@ -6,9 +6,8 @@ from schemas import FlightInfo, PriceResponse
 from ml_service import FlightPricePredictor
 from config import CITY_TO_IATA, FLIGHT_INFO
 
-flight_price_prediction = FlightPricePredictor("models/flight_price_predictor.cbm",
-                                               "models/one_hot_encoder.pkl",
-                                               "models/scaler.pkl"
+flight_price_prediction = FlightPricePredictor("models_and_pipelines/flight_price_predictor.cbm",
+                                               "models_and_pipelines/preprocessor.pkl",
                                                )
 
 app = FastAPI(title="Flight_price_predictor")

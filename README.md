@@ -70,6 +70,7 @@
 | **XGBoost** (Лучшая модель на CV) |  1743  | 9.60%  |
 | LightGBM                          |  1820  | 10.22% |
 | CatBoost                          |  1892  | 10.92% |
+| MLP                               |  3473  |   -    |
 
 Итог: лучшая модель XGBoost снижает среднюю ошибку почти на **60%** относительно baseline (MAE 4293 → ~1740 ₽).
 
@@ -102,7 +103,8 @@
 ├── parser.py                                     # Сбор данных с Aviasales API
 ├── requirements.txt                              # Зависимости
 ├── notebooks/
-│   └── Data_Processing_and_model_training.ipynb  # Предобработка, признаки, обучение моделей
+│   ├── Data_Processing_and_model_training.ipynb  # Предобработка, признаки, обучение моделей
+│   └── flight-price-prediction-mlp.ipynb         # Обучение и валидация MLP
 ├── data/
 │   └── routes_data.json                          # Предрасчитанные distance / duration по маршрутам
 └── models/
